@@ -1,23 +1,23 @@
 ## Transition-based Dependency Parser using Neural Networks
 
 ### Prerequisite
- - Download word2vec training data and put into folder data/word2vec/ 
+ - Download word2vec training data and put into folder ```data/word2vec/```
  - Run
 ```
 python utils/word_vec/train.py --train-data={TRAINING_FILE_PATH}
 ```
 
 ### Prepare Data
- - Download English UD Treebank from https://github.com/UniversalDependencies/UD_English/tree/master and put into folder data/conllu/
+ - Download English UD Treebank from https://github.com/UniversalDependencies/UD_English/tree/master and put into folder ```data/conllu/```
  - Prepare data running
 ```
 python parser/data.py --file=train,test --max_examples={SENTENCES_TO_PARSE}
 ```
-Or you can preprocess seperate files running
+ - Or you can preprocess seperate files by running
 ```
 python parser/data.py --input_file={INPUT} --output_file={OUTPUT} --max_examples={SENTENCES_TO_PARSE}
 ```
-Set SENTENCES_TO_PARSE -1 if you don't have any limitations
+Set ```SENTENCES_TO_PARSE``` -1 if you don't have any limitations
 
 ### Instructions
  - Train parser
