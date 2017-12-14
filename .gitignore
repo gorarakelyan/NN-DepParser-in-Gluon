@@ -99,4 +99,10 @@ ENV/
 /site
 
 # custom
+data/conllu/*
+data/conllu/!.keep
+data/trans_systems/*
+data/trans_systems/!.keep
+data/word2vec/*
+data/word2vec/!.keep
 data/examples/*
