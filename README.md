@@ -1,5 +1,5 @@
-## Transition-based Dependency Parser using Neural Networks
-### Implemented in MXNet/Gluon
+# Transition-based Dependency Parser using Neural Networks
+#### Implemented in MXNet/Gluon
 
 ### Prerequisite
  - Download word2vec training data and put into folder ```data/word2vec/```
