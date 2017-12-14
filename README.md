@@ -34,4 +34,4 @@ python parser/test.py --test_data --batch_size --hidden_units --drop_out --ctx
 python parser/parse_sentence.py --input_file --hidden_units --drop_out --ctx
 ```
 
-Also you can configure all the parameters in "config.py" file.
+Also you can configure all the parameters in ```config.py``` file.
