@@ -10,7 +10,7 @@ python utils/word_vec/train.py --train-data={TRAINING_FILE_PATH}
 
 ### Prepare Data
  - Download English UD Treebank from https://github.com/UniversalDependencies/UD_English/tree/master and put into folder ```data/conllu/```
- - Prepare data running
+ - Prepare data by running
 ```
 python parser/data.py --file=train,test --max_examples={SENTENCES_TO_PARSE}
 ```
@@ -30,7 +30,7 @@ python parser/train.py --train_data --epochs --batch_size --learning_rate --hidd
 python parser/test.py --test_data --batch_size --hidden_units --drop_out --ctx
 ```
 
-### Parsing Single Sentence
+### Parse Single Sentence
 ```
 python parser/parse_sentence.py --input_file --hidden_units --drop_out --ctx
 ```
