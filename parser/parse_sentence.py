@@ -25,6 +25,7 @@ parser.add_argument('--drop_out', default=NN_DROP_OUT, type=float, help='Dropout
 parser.add_argument('--ctx', default=DEFAULT_CTX, type=str, help='Context')
 
 parser.add_argument('--input_file', default=PATH_PREDICT_SENTENCE, type=str, help='Data Path')
+parser.add_argument('--output_file', default=PATH_PREDICT_OUTPUT, type=str, help='Output Path')
 args = parser.parse_args()
 
 net = MLP(drop_out=args.drop_out, 
@@ -50,6 +51,8 @@ print('Log: Parsing transitions..')
 
 T = Transition(sentence)
 
+invalid = False
+
 while T.next():
   features = T.get_config()
   vectorized = vectorize_features([features])
@@ -74,4 +77,13 @@ while T.next():
       T.set_action('right_arc:' + ARC_LABELS[prediction - T.RIGHT_ARC_INDEX])
   except:
     print('Log: Invalid prediction!')
+    invalid = True
     break
+
+if not invalid:
+  sentence = CONLLU.build(T.get_arcs(root=True), parse_str=True)
+
+  with open(args.output_file, 'w+') as output_file:
+    output_file.write(sentence)
+
+  print('Log: Saved!')

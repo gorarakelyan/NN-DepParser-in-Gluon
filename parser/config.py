@@ -8,6 +8,7 @@ PATH_CONLLU_TRAIN = os.path.join(PATH, '../','data/conllu/en-ud-train.conllu')
 PATH_PARSED_DATA_TEST = os.path.join(PATH, '../','data/trans_systems/parsed_test.npy')
 PATH_PARSED_DATA_TRAIN = os.path.join(PATH, '../','data/trans_systems/parsed_train.npy')
 PATH_PREDICT_SENTENCE = os.path.join(PATH, '../','data/examples/predict.conllu')
+PATH_PREDICT_OUTPUT = os.path.join(PATH, '../','data/examples/predict_out.conllu')
 PATH_SAVED_NN = os.path.join(PATH, 'checkpoints/nndep_mlp.params')
 
 VEC_SIZE = 100

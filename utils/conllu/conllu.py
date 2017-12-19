@@ -1,4 +1,5 @@
 import re
+from copy import copy
 from collections import defaultdict, namedtuple, OrderedDict
 
 class CONLLU:
@@ -93,3 +94,33 @@ class CONLLU:
     if not value or value == '_':
       return 
     return value
+
+  @classmethod
+  def build(cls, arcs, parse_str):
+    conllu = []
+    for from_i, to_i, label in arcs:
+      item = copy(to_i)
+      if isinstance(from_i, dict):
+        item['head'] = str(from_i['id'])
+        item['deprel'] = label
+      else:
+        item['head'] = '0'
+        item['deprel'] = 'root'
+      item['id'] = str(item['id'])
+      item['deps'] = str(item['deps']) if item['deps'] else '_'
+      item['misc'] = '|'.join(['{}={}'.format(i, j) for i, j in item['misc']]) \
+                      if item['misc'] \
+                      else '_'
+      item['feats'] = '|'.join(['{}={}'.format(i, j) for i, j in item['feats']]) \
+                      if item['feats'] \
+                      else '_'
+      conllu.append(item)
+    conllu = sorted(conllu, key=lambda x: x['id'])
+
+    parsed = []
+    for i in conllu:
+      parsed.append('\t'.join(i.values()))
+
+    if parse_str:
+      parsed = '\n'.join(parsed)
+    return parsed
