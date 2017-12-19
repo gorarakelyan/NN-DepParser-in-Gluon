@@ -20,6 +20,7 @@ NN_HIDDEN_UNITS = 128
 NN_DROP_OUT = 0.5
 
 DEFAULT_CTX = 'cpu'
+DEFAULT_VALID = 'uas'
 
 ARC_LABELS = ['nsubj', 'list', 'obj', 'iobj', 'csubj', 'ccomp', 'xcomp', 'obl', 'vocative', 'expl', 'dislocated', 'advcl', 'advmod', 'discourse', 'aux', 'cop', 'mark', 'nmod', 'appos', 'nummod', 'acl', 'amod', 'det', 'clf', 'case', 'conj', 'cc', 'fixed', 'flat', 'compound', 'parataxis', 'orphan', 'goeswith', 'reparandum', 'punct', 'root', 'dep']
 POS_LABELS = ['ADJ', 'ADV', 'VERB', 'NOUN', 'PROPN', 'INTJ', 'NUM', 'PRON', 'AUX', 'ADP', 'CCONJ', 'SCONJ', 'DET', 'PART', 'PUNCT', 'SYM', 'X']
