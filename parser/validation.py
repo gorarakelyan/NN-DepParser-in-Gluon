@@ -18,10 +18,33 @@ parser.add_argument('--validation', default=DEFAULT_VALID, type=str, help='Valid
 args = parser.parse_args()
 
 def uas(original, prediction):
-  return 1
+  if len(original) != len(prediction):
+    raise Exception('Error. Original and predicted file lengths are different.')
+
+  length = 0
+  correct = 0
+  for s in range(len(original)):
+    for i in range(len(original[s])):
+      length += 1
+      if original[s][i]['head'] == prediction[s][i]['head']:
+        correct += 1
+
+  return correct / length
 
 def las(original, prediction):
-  return 1
+  if len(original) != len(prediction):
+    raise Exception('Error. Original and predicted file lengths are different.')
+
+  length = 0
+  correct = 0
+  for s in range(len(original)):
+    for i in range(len(original[s])):
+      length += 1
+      if original[s][i]['head'] == prediction[s][i]['head'] and \
+         original[s][i]['deprel'] == prediction[s][i]['deprel']:
+        correct += 1
+
+  return correct / length
 
 def main(origin_path, prediction_path, v_type):
   print('Log: Opening data files..')
@@ -55,7 +78,7 @@ def main(origin_path, prediction_path, v_type):
     res = las(parsed_or, parsed_pr)
     return res
   else:
-    raise Exception('Log: Error. Invalid validation type')
+    raise Exception('Error. Invalid validation type')
 
 
 if __name__ == '__main__':
