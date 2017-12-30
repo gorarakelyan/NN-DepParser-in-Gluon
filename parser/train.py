@@ -18,14 +18,14 @@ parser.add_argument('--ctx', default=DEFAULT_CTX, type=str, help='Context')
 args = parser.parse_args()
 
 net = MLP(drop_out=args.drop_out, 
-	      hidden_units=args.hidden_units)
+	        hidden_units=args.hidden_units)
 
 net.set_ctx(args.ctx)
 
 data = net.prepare_data(path=args.train_data,
-				        batch_size=args.batch_size,
-				        train=True)
+                        batch_size=args.batch_size,
+                        train=True)
 
 net.train(train_data=data,
-		  epochs=args.epochs,
-	      learning_rate=args.learning_rate)
+          epochs=args.epochs,
+          learning_rate=args.learning_rate)

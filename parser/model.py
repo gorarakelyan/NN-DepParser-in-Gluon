@@ -29,9 +29,11 @@ class MLP:
 
     criterion = g.loss.SoftmaxCrossEntropyLoss()
     trainer = g.Trainer(net.collect_params(), 'sgd',
-                          {'learning_rate': learning_rate})
+                        {'learning_rate': learning_rate})
     
     print('Log: Training started..')
+
+    best_model = 0
 
     for e in range(epochs):
       cumulative_loss = 0
@@ -48,13 +50,11 @@ class MLP:
       train_accuracy = self.evaluation(train_data)
       print('Log: Epoch {e}. Train Accuracy - {acc}'.format(e=e, acc=train_accuracy))
 
+      if train_accuracy > best_model:
+        net.save_params(PATH_SAVED_NN)
+        best_model = train_accuracy
+
     print('Log: Training done!')
-
-    print('Log: Savind model..')
-
-    net.save_params(PATH_SAVED_NN)
-
-    print('Log: Saved!')
 
   def predict(self, data):
     return self.mlp(data)
@@ -83,14 +83,21 @@ class MLP:
   def prepare_data(path, batch_size, train):
     print('Log: Preparing data..')
 
-    input = path
-
-    data = np.load(input)
-
     dataset = []
-    for row in data:
-      for i in row:
-        d = np.concatenate(tuple((np.array(c).flatten() for c in i[0])))
-        dataset.append((d.astype(np.float32), i[1]))
+    index = 0
 
+    while True:
+      try:
+        data = np.load(path.format(index))
+      except:
+        break
+        
+      index += 1
+
+      for row in data:
+        for i in row:
+          d = np.concatenate(tuple((np.array(c).flatten() for c in i[0])))
+          dataset.append((d.astype(np.float32), i[1]))
+  
     return g.data.DataLoader(dataset, batch_size, shuffle=True if train else False)
+  

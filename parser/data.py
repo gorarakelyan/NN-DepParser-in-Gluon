@@ -53,9 +53,12 @@ def main(input, output, max_examples):
 
   projective = 0
   non_projective = 0
-  data = []
 
   limited_sent = parsed_conllu if max_examples == -1 else parsed_conllu[:max_examples]
+  index = 0
+  file_index = 0
+  data = []
+
   for sentence in limited_sent:
     T = Transition(copy(sentence))
 
@@ -66,16 +69,20 @@ def main(input, output, max_examples):
       non_projective += 1
     else:
       vectorized = vectorize_features(features[0])
-      data.append([ [vectorized[i], features[1][i]] for i in range(len(vectorized)) ])
+      s_arr = [ [vectorized[i], features[1][i]] for i in range(len(vectorized)) ]
+      data.append(s_arr)
+      index += 1
+
+      if index%15 == 0:
+        np.save(output.format(file_index), data, allow_pickle=True)
+        file_index += 1
+        data = []
+        print('Log: Done {}.'.format(file_index))
+
+  print('Log: Done!')
 
   print('Log: Projective trees:{p}, Non-projective trees:{n_p}'\
         .format(p=projective, n_p=non_projective))
-    
-  print('Log: Saving output..')
-
-  np.save(output, np.array(data))
-  
-  print('Log: Done.')
 
 if __name__ == '__main__':
   if args.input_file and args.output_file:

@@ -1,6 +1,15 @@
+import os
+import sys
+sys.path.append(os.path.join(
+  os.path.abspath(os.path.dirname(__file__)),
+   '../parser/config')
+  )
+
 import re
 from copy import copy
 from collections import defaultdict, namedtuple, OrderedDict
+
+from config import *
 
 class CONLLU:
   DEFAULT_FIELDS = ('id', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc')
@@ -67,6 +76,11 @@ class CONLLU:
           value = value.split(':')[0]
       elif field == 'misc':
         value = self.parse_dict_value(line[i])
+      elif field == 'upostag':
+        if line[i] in POS_LABELS:
+          value = line[i]
+        else:
+          value = 'PUNCT'
       else:
         value = line[i]
 
@@ -105,7 +119,7 @@ class CONLLU:
         item['deprel'] = label
       else:
         item['head'] = '0'
-        item['deprel'] = 'root'
+        item['deprel'] = ROOT_LABEL
       item['id'] = str(item['id'])
       item['deps'] = str(item['deps']) if item['deps'] else '_'
       item['misc'] = '|'.join(['{}={}'.format(i, j) for i, j in item['misc']]) \

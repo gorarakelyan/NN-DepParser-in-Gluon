@@ -60,7 +60,7 @@ while T.next():
   
   Y = net.predict(mx.nd.array([input]))
   output = Y[0].asnumpy()
-
+ 
   valid = T.get_valid_actions()
   
   for prediction in np.argsort(output, kind='quicksort')[::-1]:

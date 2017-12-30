@@ -16,15 +16,15 @@ parser.add_argument('--ctx', default=DEFAULT_CTX, type=str, help='Context')
 args = parser.parse_args()
 
 net = MLP(drop_out=args.drop_out, 
-	      hidden_units=args.hidden_units)
+          hidden_units=args.hidden_units)
 
 net.set_ctx(args.ctx)
 
 net.load_model()
 
 data = net.prepare_data(path=args.test_data,
-				        batch_size=args.batch_size,
-				        train=False)
+                        batch_size=args.batch_size,
+                        train=False)
 
 accuracy = net.evaluation(data)
 print('Log: Test Accuracy - {acc}'.format(acc=accuracy))
