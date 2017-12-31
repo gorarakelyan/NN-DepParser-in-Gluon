@@ -5,10 +5,10 @@ PATH = os.path.abspath(os.path.dirname(__file__))
 PATH_DATA_WORD2VEC = os.path.join(PATH, '../','data/word2vec/')
 PATH_CONLLU_TEST = os.path.join(PATH, '../','data/conllu/en-ud-test.conllu')
 PATH_CONLLU_TRAIN = os.path.join(PATH, '../','data/conllu/en-ud-train.conllu')
-PATH_PARSED_DATA_TEST = os.path.join(PATH, '../','data/trans_systems/train/conllx-{}.npy')
-PATH_PARSED_DATA_TRAIN = os.path.join(PATH, '../','data/trans_systems/test/conllx-{}.npy')
-PATH_PREDICT_SENTENCE = os.path.join(PATH, '../','data/examples/predict.conllu')
-PATH_PREDICT_OUTPUT = os.path.join(PATH, '../','data/examples/predict_out.conllu')
+PATH_PARSED_DATA_TEST = os.path.join(PATH, '../','data/trans_systems/test/conllx-{}.npy')
+PATH_PARSED_DATA_TRAIN = os.path.join(PATH, '../','data/trans_systems/train/conllx-{}.npy')
+PATH_PREDICT_SENTENCE = os.path.join(PATH, '../','data/examples/predict.conllx')
+PATH_PREDICT_OUTPUT = os.path.join(PATH, '../','data/examples/predict_out.conllx')
 PATH_SAVED_NN = os.path.join(PATH, 'checkpoints/nndep_mlp.params')
 PATH_PENN2CONLL = os.path.join(PATH, '../', 'modules/penn-conll-coverter/pennconverter.jar')
 
@@ -19,6 +19,8 @@ NN_BATCH_SIZE = 25
 NN_LEARNING_RATE = 0.01
 NN_HIDDEN_UNITS = 200
 NN_DROP_OUT = 0.5
+
+DEFAULT_DATASET_SIZE = 40
 
 DEFAULT_CTX = 'cpu'
 DEFAULT_VALID = 'uas'

@@ -64,16 +64,16 @@ class Transition:
         return True
 
     return False
-
+  
   def get_config(self):
     return self.features(self.config)
-
+  
   def get_arcs(self, root=False):
     arcs = self.config['arcs']
     if root:
       arcs.append(('0', self.config['stack'][0], 'root'))
     return arcs
-
+  
   def set_action(self, action):
     if not action:
       return

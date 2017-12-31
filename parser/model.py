@@ -22,7 +22,7 @@ class MLP:
 
     self.mlp = net
 
-  def train(self, train_data, epochs, learning_rate):
+  def train(self, data_attr, epochs, learning_rate):
     net = self.mlp
 
     net.collect_params().initialize(mx.init.Xavier(), ctx=self.ctx)
@@ -36,18 +36,25 @@ class MLP:
     best_model = 0
 
     for e in range(epochs):
-      cumulative_loss = 0
-      for i, (data, label) in enumerate(train_data):
-        data = data.as_in_context(self.ctx)
-        label = label.as_in_context(self.ctx)
-        with autograd.record():
-          output = net(data)
-          loss = criterion(output, label)
-        loss.backward()
-        trainer.step(data.shape[0])
-        cumulative_loss += nd.sum(loss).asscalar()
+      cumulative_accuracy = 0
+      set_count = 0
+      data_gen = self.prepare_data(**data_attr)
+      #cumulative_loss = 0
+      for train_data in data_gen:
+        print('Log: Training current dataset..')
+        set_count += 1
+        for i, (data, label) in enumerate(train_data):
+          data = data.as_in_context(self.ctx)
+          label = label.as_in_context(self.ctx)
+          with autograd.record():
+            output = net(data)
+            loss = criterion(output, label)
+          loss.backward()
+          trainer.step(data.shape[0])
+          #cumulative_loss += nd.sum(loss).asscalar()
 
-      train_accuracy = self.evaluation(train_data)
+        cumulative_accuracy += self.evaluation(train_data)
+      train_accuracy = cumulative_accuracy / set_count
       print('Log: Epoch {e}. Train Accuracy - {acc}'.format(e=e, acc=train_accuracy))
 
       if train_accuracy > best_model:
@@ -80,24 +87,30 @@ class MLP:
       self.ctx = mx.gpu()
 
   @staticmethod
-  def prepare_data(path, batch_size, train):
-    print('Log: Preparing data..')
-
-    dataset = []
+  def prepare_data(path, dataset_size, batch_size, shuffle_data):
     index = 0
 
     while True:
-      try:
-        data = np.load(path.format(index))
-      except:
-        break
-        
-      index += 1
+      dataset = []
+      print('Log: Preparing dataset {i} ..'.format(i=index))
+      while True:
+        try:
+          data = np.load(path.format(index))
+        except:
+          break
 
-      for row in data:
-        for i in row:
-          d = np.concatenate(tuple((np.array(c).flatten() for c in i[0])))
-          dataset.append((d.astype(np.float32), i[1]))
-  
-    return g.data.DataLoader(dataset, batch_size, shuffle=True if train else False)
+        index += 1
+
+        for row in data:
+          for i in row:
+            d = np.concatenate(tuple((np.array(c).flatten() for c in i[0])))
+            dataset.append((d.astype(np.float32), i[1]))
+      
+        if index%dataset_size == 0:
+          break
+
+      if dataset:
+        yield g.data.DataLoader(dataset, batch_size, shuffle=True if shuffle_data else False)
+      else:
+        break
   

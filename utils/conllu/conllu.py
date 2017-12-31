@@ -106,7 +106,7 @@ class CONLLU:
 
   def parse_nullable_value(self, value):
     if not value or value == '_':
-      return 
+      return '_'
     return value
 
   @classmethod
@@ -120,16 +120,22 @@ class CONLLU:
       else:
         item['head'] = '0'
         item['deprel'] = ROOT_LABEL
-      item['id'] = str(item['id'])
+      item['id'] = str(item['id']) if item['id'] else '1'
       item['deps'] = str(item['deps']) if item['deps'] else '_'
-      item['misc'] = '|'.join(['{}={}'.format(i, j) for i, j in item['misc']]) \
-                      if item['misc'] \
-                      else '_'
-      item['feats'] = '|'.join(['{}={}'.format(i, j) for i, j in item['feats']]) \
-                      if item['feats'] \
-                      else '_'
+      try:
+        item['misc'] = '|'.join(['{}={}'.format(i, j) for i, j in item['misc']]) \
+                       if item['misc'] \
+                       else '_'
+      except:
+        item['misc'] = '_'
+      try:
+        item['feats'] = '|'.join(['{}={}'.format(i, j) for i, j in item['feats']]) \
+                        if item['feats'] \
+                        else '_'
+      except:
+        item['feats'] = '_'
       conllu.append(item)
-    conllu = sorted(conllu, key=lambda x: x['id'])
+    conllu = sorted(conllu, key=lambda x: int(x['id']))
 
     parsed = []
     for i in conllu:

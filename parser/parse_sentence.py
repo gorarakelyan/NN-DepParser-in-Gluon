@@ -22,7 +22,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--hidden_units', default=NN_HIDDEN_UNITS, type=int, help='Hidden Units')
 parser.add_argument('--drop_out', default=NN_DROP_OUT, type=float, help='Dropout rate')
 
-parser.add_argument('--ctx', default=DEFAULT_CTX, type=str, help='Context')
+parser.add_argument('--ctx', default='cpu', type=str, help='Context')
 
 parser.add_argument('--input_file', default=PATH_PREDICT_SENTENCE, type=str, help='Data Path')
 parser.add_argument('--output_file', default=PATH_PREDICT_OUTPUT, type=str, help='Output Path')
@@ -75,7 +75,8 @@ while T.next():
       T.set_action('left_arc:' + ARC_LABELS[prediction])
     else:
       T.set_action('right_arc:' + ARC_LABELS[prediction - T.RIGHT_ARC_INDEX])
-  except:
+  except Exception as E:
+    print('Log: Error - {}'.format(E))
     print('Log: Invalid prediction!')
     invalid = True
     break
